@@ -23,7 +23,7 @@ def open(spec, *args, **kw):
 
 class PointInTimeFile:
     def __init__(self, pit_spec=None):
-        self.pit = self.parse_time_point(pit_spec)
+        self.pit = parse_time_point(pit_spec)
         self.filename = None
 
 
@@ -32,28 +32,6 @@ class PointInTimeFile:
             return False
         with builtins.open(self.filename, 'rb') as f:
             return f.read(2) == b'\x1f\x8b'
-
-
-    @staticmethod
-    def parse_time_point(spec):
-        if spec is None:
-            return dt.datetime.now()
-        if not isinstance(spec, str):
-            raise TypeError('spec should be string')
-        s = re.sub(r'[^0-9]', '', spec)
-        if len(s) < 8:
-            raise ValueError('invalid spec {spec}')
-        year = int(s[:4])
-        mon = int(s[4:6])
-        day = int(s[6:8])
-        
-        if len(s) >= 10:
-            hh = len(s) >= 10 and int(s[ 8:10]) or 0
-            mm = len(s) >= 12 and int(s[10:12]) or 0
-            ss = len(s) >= 14 and int(s[12:14]) or 0
-        else:
-            hh, mm, ss = (23, 59, 59)
-        return dt.datetime(year, mon, day, hh, mm, ss)
 
 
     @property
@@ -102,6 +80,29 @@ class PointInTimeFile:
                 yield f
             finally:
                 pass
+
+
+def parse_time_point(spec):
+    if spec is None:
+        return dt.datetime.now()
+    if isinstance(spec, dt.datetime):
+        return spec
+    if not isinstance(spec, str):
+        raise TypeError('spec should be string')
+    s = re.sub(r'[^0-9]', '', spec)
+    if len(s) < 8:
+        raise ValueError('invalid spec {spec}')
+    year = int(s[:4])
+    mon = int(s[4:6])
+    day = int(s[6:8])
+
+    if len(s) >= 10:
+        hh = len(s) >= 10 and int(s[ 8:10]) or 0
+        mm = len(s) >= 12 and int(s[10:12]) or 0
+        ss = len(s) >= 14 and int(s[12:14]) or 0
+    else:
+        hh, mm, ss = (23, 59, 59)
+    return dt.datetime(year, mon, day, hh, mm, ss)
 
 
 ### pits/__init__.py ends here
