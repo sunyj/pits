@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["pits"]
+
+[project]
+name = "pits"
+version = "0.1.0"
+authors = [
+  { name="Sun Yijiang", email="sunyijiang@gmail.com" },
+]
+description = "Point-in-time Storage."
+readme = "README.md"
+requires-python = ">=3.4"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/sunyj/pits"
+"Bug Tracker" = "https://github.com/sunyj/pits/issues"
