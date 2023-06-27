@@ -2,12 +2,9 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-py-modules = ["pits"]
-
 [project]
 name = "pits"
-version = "0.1.0"
+version = "0.1.1"
 authors = [
   { name="Sun Yijiang", email="sunyijiang@gmail.com" },
 ]
